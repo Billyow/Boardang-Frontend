@@ -1,0 +1,78 @@
+form {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: #333;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+input {
+  margin-top: 0.3rem;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border 0.2s ease;
+
+  &:focus {
+    border-color: #3f51b5;
+    outline: none;
+  }
+}
+
+button[type='submit'] {
+  padding: 0.8rem;
+  background-color: #3f51b5;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #303f9f;
+  }
+}
+
+a {
+  text-align: center;
+  margin-top: 0.5rem;
+  text-decoration: underline;
+  font-size: 0.9rem;
+  color: #3f51b5;
+  cursor: pointer;
+
+  &:hover {
+    color: #1a237e;
+  }
+}
+
+p {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #444;
+  background-color: #e8f5e9;
+  padding: 1rem;
+  border-radius: 4px;
+}

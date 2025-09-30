@@ -1,1 +1,21 @@
-<p>login works!</p>
+<h2>Login</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label>
+    Email:
+    <input type="email" formControlName="email" />
+  </label>
+
+  <label>
+    Password:
+    <input type="password" formControlName="password" />
+  </label>
+
+  <button type="submit">Login</button>
+  <a [routerLink]="['/register']">Registrarse</a>
+
+</form>
+
+@if (submitted()) {
+  <p>Submitted with: {{ form.value | json }}</p>
+}
