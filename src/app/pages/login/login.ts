@@ -1,30 +1,55 @@
-import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+
+import Swal from 'sweetalert2';
+import { AuthService } from '../../shared/services/AuthService';
+import { LoginRequest } from '../../shared/models/login-request';
+import { LoginResponse } from '../../shared/models/login-response';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.html',
-  styleUrls: ['./login.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './login.scss',
 })
-export class Login {
+export class LoginComponent {
   private readonly fb = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  protected readonly submitted = signal(false);
 
-  readonly form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required],
+  protected readonly form = this.fb.group({
+    email: ['', [Validators.required,]],
+    password: ['', [Validators.required,]],
   });
 
-  readonly submitted = signal(false);
+  protected onSubmit(): void {
+    if (this.form.invalid) return;
 
-  onSubmit(): void {
-    if (this.form.valid) {
-      this.submitted.set(true);
-      console.log('Login form:', this.form.value);
-    }
+    const request: LoginRequest = this.form.value as LoginRequest;
+
+    this.authService.login(request).subscribe({
+      next: (response: LoginResponse) => {
+        this.authService.saveToken(response);
+        this.submitted.set(true);
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Login successful!',
+          text: `Welcome back!`,
+        }).then(() => this.router.navigate(['/']));
+      },
+      error: (err: any) => {
+        console.error('Login error:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Login failed',
+          text: 'Please check your credentials.',
+        });
+      }
+    });
   }
 }

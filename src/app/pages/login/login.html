@@ -12,10 +12,10 @@
   </label>
 
   <button type="submit">Login</button>
-  <a [routerLink]="['/register']">Registrarse</a>
 
+  <a [routerLink]="['/register']">Don't have an account? Register</a>
 </form>
 
 @if (submitted()) {
-  <p>Submitted with: {{ form.value | json }}</p>
+  <p>Logged in with: {{ form.value | json }}</p>
 }
