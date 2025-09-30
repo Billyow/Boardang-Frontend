@@ -1,1 +1,13 @@
-<p>search-user works!</p>
+<h2>Search User by Email</h2>
+
+<form [formGroup]="form">
+  <label>
+    Email:
+    <input type="email" formControlName="email" />
+  </label>
+
+  <div class="buttons">
+    <button type="button" class="blue" (click)="onNormalSearch()">Normal Search</button>
+    <button type="button" class="red" (click)="onCacheSearch()">Cached Search</button>
+  </div>
+</form>
