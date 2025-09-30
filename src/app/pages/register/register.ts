@@ -1,7 +1,10 @@
-import { Component, signal, inject } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { AuthService } from '../../shared/services/AuthService';
+import { RegisterRequest } from '../../shared/models/register-request';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -10,21 +13,57 @@ import { RouterModule } from '@angular/router';
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })
-export class Register{
-  protected readonly formBuilder = inject(FormBuilder);
+export class RegisterComponent {  // ✅ cambio aquí
+  private readonly fb = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
   protected readonly submitted = signal(false);
 
-  protected readonly form = this.formBuilder.group({
+  protected readonly form = this.fb.group({
     name: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    email: ['', [Validators.required]],
+    password: ['', [Validators.required]],
   });
 
   protected onSubmit(): void {
-    if (this.form.valid) {
-      this.submitted.set(true);
-      // Aquí iría el llamado al servicio de registro
-      console.log('Registering:', this.form.value);
+
+    if (this.form.invalid) {
+      console.warn('Formulario inválido');
+      return;
     }
+    const { name, email, password } = this.form.value;
+    const request: RegisterRequest = {
+      name: name ?? '',
+      email: email ?? '',
+      password: password ?? '',
+    };
+
+    this.authService.register(request).subscribe({
+      next: (response) => { 
+        if (response.status === 201 || response.status === 200) {
+          this.submitted.set(true);
+          Swal.fire({
+            icon: 'success',
+            title: 'Account created!',
+            text: 'You can now log in.',
+          }).then(() => this.router.navigate(['/login']));
+        } else {
+          console.warn('Unexpected status:', response.status);
+          Swal.fire({
+            icon: 'error',
+            title: 'Unexpected response',
+            text: `Server returned status ${response.status}`,
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Registration error:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Registration failed',
+          text: 'Please check your data or try again later.',
+        });
+      },
+    });
   }
 }
