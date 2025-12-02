@@ -1,10 +1,10 @@
 // src/app/shared/services/auth.service.ts
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { RegisterRequest } from '../models/register-request.js';
+import { RegisterRequest } from '../models/auth.model';
 import { Observable } from 'rxjs';
-import { LoginRequest } from '../models/login-request.js';
-import { LoginResponse } from '../models/login-response.js';
+import { LoginRequest } from '../models/auth.model.js';
+import { LoginResponse } from '../models/auth.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

@@ -5,8 +5,8 @@ import { CommonModule } from '@angular/common';
 
 import Swal from 'sweetalert2';
 import { AuthService } from '../../shared/services/AuthService';
-import { LoginRequest } from '../../shared/models/login-request';
-import { LoginResponse } from '../../shared/models/login-response';
+import { LoginRequest, LoginResponse } from '../../shared/models/auth.model';
+
 
 @Component({
   selector: 'app-login',
@@ -40,7 +40,7 @@ export class LoginComponent {
           icon: 'success',
           title: 'Login successful!',
           text: `Welcome back!`,
-        }).then(() => this.router.navigate(['/']));
+        }).then(() => this.router.navigate(['/boards']));
       },
       error: (err: any) => {
         console.error('Login error:', err);

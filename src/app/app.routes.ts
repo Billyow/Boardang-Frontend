@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login';
 import { RegisterComponent } from './pages/register/register';
-import { SearchUserComponent } from './pages/search-user/search-user'
 
 export const routes: Routes = [
   {
@@ -10,7 +9,7 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'login',
+    path: '',
     component: LoginComponent,
   },
   {
@@ -18,9 +17,5 @@ export const routes: Routes = [
     component: RegisterComponent
   },
   
-  {
-    path: '',
-    component: SearchUserComponent
-  }
 
 ];

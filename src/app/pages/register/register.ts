@@ -3,7 +3,7 @@ import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../shared/services/AuthService';
-import { RegisterRequest } from '../../shared/models/register-request';
+import { RegisterRequest } from '../../shared/models/auth.model';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })
-export class RegisterComponent {  // ✅ cambio aquí
+export class RegisterComponent { 
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
@@ -46,7 +46,7 @@ export class RegisterComponent {  // ✅ cambio aquí
             icon: 'success',
             title: 'Account created!',
             text: 'You can now log in.',
-          }).then(() => this.router.navigate(['/login']));
+          }).then(() => this.router.navigate(['/']));
         } else {
           console.warn('Unexpected status:', response.status);
           Swal.fire({
