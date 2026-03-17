@@ -1,0 +1,42 @@
+<h2>My Boards</h2>
+
+@if (loading()) {
+  <p>Loading...</p>
+}
+
+@if (error()) {
+  <p role="alert">{{ error() }}</p>
+}
+
+@if (!loading() && !error()) {
+  @if (boards().length === 0) {
+    <section aria-label="Create your first board">
+      <p>You have no boards yet. Create one to get started.</p>
+
+      <form [formGroup]="createForm" (ngSubmit)="onCreate()">
+        <label for="title">Board title</label>
+        <input id="title" type="text" formControlName="title" />
+
+        <label for="description">Description (optional)</label>
+        <input id="description" type="text" formControlName="description" />
+
+        <button type="submit" [disabled]="createForm.invalid || creating()">
+          Create board
+        </button>
+      </form>
+    </section>
+  } @else {
+    <ul>
+      @for (board of boards(); track board.id) {
+        <li>
+          <a [routerLink]="['/boards', board.id]">
+            <h3>{{ board.title }}</h3>
+            @if (board.description) {
+              <p>{{ board.description }}</p>
+            }
+          </a>
+        </li>
+      }
+    </ul>
+  }
+}

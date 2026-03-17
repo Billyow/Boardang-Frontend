@@ -20,7 +20,6 @@ export const routes: Routes = [
   {
     path: 'boards',
     canActivate: [authGuard],
-    // component: BoardsComponent  — add when the boards page is ready
-    children: [],
+    loadComponent: () => import('./pages/boards/boards').then(m => m.BoardsComponent),
   },
 ];
