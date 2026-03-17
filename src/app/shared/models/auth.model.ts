@@ -4,9 +4,17 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  token: string;
-  tokenType: string;
-  expiresIn: number;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface RefreshRequest {
+  refreshToken: string;
+}
+
+export interface RefreshResponse {
+  accessToken: string;
+  refreshToken: string;
 }
 
 export interface RegisterRequest {
