@@ -1,6 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { JsonPipe } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../shared/services/AuthService';
 import { RegisterRequest } from '../../shared/models/auth.model';
@@ -8,15 +8,16 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [ReactiveFormsModule, RouterModule, JsonPipe],
   templateUrl: './register.html',
   styleUrl: './register.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterComponent { 
+export class RegisterComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+
   protected readonly submitted = signal(false);
 
   protected readonly form = this.fb.group({
@@ -26,11 +27,11 @@ export class RegisterComponent {
   });
 
   protected onSubmit(): void {
-
     if (this.form.invalid) {
       console.warn('Formulario inválido');
       return;
     }
+
     const { name, email, password } = this.form.value;
     const request: RegisterRequest = {
       name: name ?? '',
@@ -39,7 +40,7 @@ export class RegisterComponent {
     };
 
     this.authService.register(request).subscribe({
-      next: (response) => { 
+      next: (response) => {
         if (response.status === 201 || response.status === 200) {
           this.submitted.set(true);
           Swal.fire({
@@ -56,7 +57,7 @@ export class RegisterComponent {
           });
         }
       },
-      error: (err) => {
+      error: (err: unknown) => {
         console.error('Registration error:', err);
         Swal.fire({
           icon: 'error',
