@@ -1,15 +1,46 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { catchError, switchMap, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/AuthService';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-    const token = inject(AuthService).getToken();
+    const authService = inject(AuthService);
+    const router = inject(Router);
 
-    if (token) {
-        req = req.clone({
-            setHeaders: { Authorization: `Bearer ${token}` }
-        });
-    }
+    const token = authService.getToken();
+    const authReq = token
+        ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
+        : req;
 
-    return next(req);
+    return next(authReq).pipe(
+        catchError((error: HttpErrorResponse) => {
+            if (error.status !== 401 || req.url.includes('/auth/refresh')) {
+                return throwError(() => error);
+            }
+
+            const refreshToken = authService.getRefreshToken();
+
+            if (!refreshToken) {
+                authService.logout();
+                router.navigate(['/login']);
+                return throwError(() => error);
+            }
+
+            return authService.refresh(refreshToken).pipe(
+                switchMap((response) => {
+                    authService.saveToken(response);
+                    const retryReq = req.clone({
+                        setHeaders: { Authorization: `Bearer ${response.accessToken}` },
+                    });
+                    return next(retryReq);
+                }),
+                catchError((refreshError: unknown) => {
+                    authService.logout();
+                    router.navigate(['/login']);
+                    return throwError(() => refreshError);
+                })
+            );
+        })
+    );
 };
