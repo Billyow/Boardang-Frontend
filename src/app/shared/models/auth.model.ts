@@ -32,3 +32,14 @@ export interface UserDTO {
   updatedAt: string;
 }
 
+export interface JwtClaims {
+  sub: string;
+  type: 'access' | 'refresh';
+  userId: number;
+  name: string;
+  email: string;
+  role: string;
+  exp: number;
+  iat: number;
+}
+
