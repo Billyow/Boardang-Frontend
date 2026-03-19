@@ -1,78 +1,355 @@
+// ── Layout ─────────────────────────────────────────────────────────────────────
+:host {
+  display: block;
+  height: 100vh;
+}
+
+.login-page {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+// ── Left decorative panel ──────────────────────────────────────────────────────
+.left-panel {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  background: #0d0d1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  contain: layout style paint; // isolate repaints to this panel only
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+// Subtle dot-grid overlay
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(137, 180, 250, 0.12) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+// ── Orbs ───────────────────────────────────────────────────────────────────────
+.orbs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(72px);
+  will-change: opacity;
+}
+
+.orb-1 {
+  width: 600px;
+  height: 600px;
+  top: -200px;
+  left: -150px;
+  background: radial-gradient(circle, rgba(137, 180, 250, 0.55) 0%, transparent 65%);
+  animation: breathe 8s ease-in-out infinite;
+}
+
+.orb-2 {
+  width: 500px;
+  height: 500px;
+  bottom: -150px;
+  right: -100px;
+  background: radial-gradient(circle, rgba(180, 190, 254, 0.5) 0%, transparent 65%);
+  animation: breathe 11s ease-in-out infinite reverse;
+}
+
+.orb-3 {
+  width: 360px;
+  height: 360px;
+  top: 40%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(203, 166, 247, 0.35) 0%, transparent 65%);
+  animation: breathe 14s ease-in-out infinite;
+  animation-delay: -4s;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1;   }
+}
+
+// ── Left content ───────────────────────────────────────────────────────────────
+.left-content {
+  position: relative;
+  z-index: 2;
+  padding: 48px;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #89b4fa 0%, #b4befe 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0d0d1a;
+  flex-shrink: 0;
+  box-shadow: 0 0 24px rgba(137, 180, 250, 0.4);
+}
+
+.brand-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #cdd6f4;
+  letter-spacing: -0.3px;
+}
+
+.hero-text {
+  h2 {
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    color: #cdd6f4;
+
+    em {
+      font-style: normal;
+      background: linear-gradient(120deg, #89b4fa 0%, #b4befe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  p {
+    margin-top: 16px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #6c7086;
+  }
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #a6adc8;
+}
+
+.feature-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #89b4fa, #b4befe);
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(137, 180, 250, 0.5);
+}
+
+// ── Right form panel ───────────────────────────────────────────────────────────
+.right-panel {
+  width: 460px;
+  flex-shrink: 0;
+  background: #13131f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 40px;
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    border-left: none;
+  }
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 360px;
+  animation: fade-up 0.5s ease both;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ── Form header ────────────────────────────────────────────────────────────────
+.form-header {
+  margin-bottom: 32px;
+
+  h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #cdd6f4;
+    letter-spacing: -0.5px;
+  }
+
+  p {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #6c7086;
+  }
+}
+
+// ── Fields ─────────────────────────────────────────────────────────────────────
 form {
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 2rem;
-  border-radius: 8px;
-  background-color: #f5f5f5;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 18px;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  font-size: 1.8rem;
-  color: #333;
-}
-
-label {
+.field {
   display: flex;
   flex-direction: column;
-  font-weight: 600;
-  color: #555;
-  font-size: 0.95rem;
+  gap: 7px;
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #a6adc8;
+    letter-spacing: 0.01em;
+  }
+}
+
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 13px;
+  color: #45475a;
+  pointer-events: none;
+  transition: color 0.15s;
+  flex-shrink: 0;
 }
 
 input {
-  margin-top: 0.3rem;
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-  transition: border 0.2s ease;
+  width: 100%;
+  padding: 11px 14px 11px 40px;
+  background: #181825;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  color: #cdd6f4;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.18s, box-shadow 0.18s;
+
+  &::placeholder {
+    color: #45475a;
+  }
 
   &:focus {
-    border-color: #3f51b5;
     outline: none;
+    border-color: rgba(137, 180, 250, 0.5);
+    box-shadow: 0 0 0 3px rgba(137, 180, 250, 0.08);
+
+    // Light up the icon
+    & ~ .input-icon {
+      color: #89b4fa;
+    }
   }
 }
 
-button[type='submit'] {
-  padding: 0.8rem;
-  background-color: #3f51b5;
-  color: white;
-  font-weight: bold;
+// Icon highlight when input is focused (sibling won't work, use :focus-within on wrap)
+.input-wrap:focus-within .input-icon {
+  color: #89b4fa;
+}
+
+// ── Submit button ──────────────────────────────────────────────────────────────
+.submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 8px;
+  padding: 13px 24px;
+  background: linear-gradient(135deg, #89b4fa 0%, #b4befe 100%);
+  color: #13131f;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: opacity 0.18s, transform 0.18s, box-shadow 0.18s;
+  box-shadow: 0 4px 20px rgba(137, 180, 250, 0.25);
 
-  &:hover {
-    background-color: #303f9f;
+  svg {
+    transition: transform 0.18s;
+  }
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 28px rgba(137, 180, 250, 0.35);
+
+    svg {
+      transform: translateX(3px);
+    }
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 12px rgba(137, 180, 250, 0.2);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
   }
 }
 
-a {
+// ── Register link ──────────────────────────────────────────────────────────────
+.register-link {
+  margin-top: 24px;
   text-align: center;
-  margin-top: 0.5rem;
-  text-decoration: underline;
-  font-size: 0.9rem;
-  color: #3f51b5;
-  cursor: pointer;
+  font-size: 13px;
+  color: #6c7086;
 
-  &:hover {
-    color: #1a237e;
+  a {
+    color: #89b4fa;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.15s;
+
+    &:hover {
+      color: #b4befe;
+    }
   }
-}
-
-p {
-  margin-top: 1rem;
-  font-size: 0.85rem;
-  color: #444;
-  background-color: #e8f5e9;
-  padding: 1rem;
-  border-radius: 4px;
 }

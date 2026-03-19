@@ -1,15 +1,14 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { JsonPipe } from '@angular/common';
 
-import Swal from 'sweetalert2';
+import { swal } from '../../shared/utils/swal';
 import { AuthService } from '../../shared/services/AuthService';
 import { LoginRequest } from '../../shared/models/auth.model';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterModule, JsonPipe],
+  imports: [ReactiveFormsModule, RouterModule],
   templateUrl: './login.html',
   styleUrl: './login.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,8 +17,6 @@ export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-
-  protected readonly submitted = signal(false);
 
   protected readonly form = this.fb.group({
     email: ['', [Validators.required]],
@@ -34,21 +31,13 @@ export class LoginComponent {
     this.authService.login(request).subscribe({
       next: (response) => {
         this.authService.saveToken(response);
-        this.submitted.set(true);
 
-        Swal.fire({
-          icon: 'success',
-          title: 'Login successful!',
-          text: 'Welcome back!',
-        }).then(() => this.router.navigate(['/boards']));
+        swal.success('Login successful!', 'Welcome back!')
+          .then(() => this.router.navigate(['/boards']));
       },
       error: (err: unknown) => {
         console.error('Login error:', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Login failed',
-          text: 'Please check your credentials.',
-        });
+        swal.error('Login failed', 'Please check your credentials.');
       },
     });
   }
