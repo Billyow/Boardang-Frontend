@@ -1,1 +1,57 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  background: #13131f;
+  color: #cdd6f4;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+// ── SweetAlert2 theme overrides ───────────────────────────────────────────────
+.swal-boardang {
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+
+  .swal2-title {
+    color: #cdd6f4 !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+  }
+
+  .swal2-html-container {
+    color: #a6adc8 !important;
+    font-size: 14px !important;
+  }
+}
+
+.swal-boardang-btn {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  padding: 10px 24px !important;
+  border-radius: 8px !important;
+  background: linear-gradient(135deg, #89b4fa 0%, #b4befe 100%) !important;
+  color: #13131f !important;
+  box-shadow: 0 4px 16px rgba(137, 180, 250, 0.3) !important;
+  transition: opacity 0.15s, transform 0.15s !important;
+
+  &:hover {
+    opacity: 0.88 !important;
+    transform: translateY(-1px) !important;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(137, 180, 250, 0.25) !important;
+  }
+}
