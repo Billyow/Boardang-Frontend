@@ -18,8 +18,19 @@ export const routes: Routes = [
     component: RegisterComponent,
   },
   {
-    path: 'boards',
+    path: '',
     canActivate: [authGuard],
-    loadComponent: () => import('./pages/boards/boards').then(m => m.BoardsComponent),
+    loadComponent: () => import('./shared/components/shell/shell').then(m => m.ShellComponent),
+    children: [
+      {
+        path: 'boards',
+        loadComponent: () => import('./pages/boards/boards').then(m => m.BoardsComponent),
+      },
+      {
+        path: '',
+        redirectTo: 'boards',
+        pathMatch: 'full',
+      },
+    ],
   },
 ];

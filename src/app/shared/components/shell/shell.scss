@@ -1,0 +1,23 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.shell-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  --sidebar-width: 260px;
+  transition: --sidebar-width 0.22s;
+
+  &.sidebar-collapsed {
+    --sidebar-width: 60px;
+  }
+}
+
+.shell-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 28px;
+}

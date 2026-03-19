@@ -1,0 +1,8 @@
+<app-header />
+
+<div class="shell-body" [class.sidebar-collapsed]="sidebarState.collapsed()">
+  <app-sidebar />
+  <main class="shell-main">
+    <router-outlet />
+  </main>
+</div>
