@@ -1,0 +1,176 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  height: 60px;
+  width: 100%;
+  box-sizing: border-box;
+  background: #13131f;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 16px rgba(0, 0, 0, 0.35);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* ── Left: logo / home ─────────────────────────────────── */
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.home-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  padding: 7px 14px 7px 10px;
+  border-radius: 8px;
+  transition: background 0.18s;
+
+  .logo-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, #89b4fa 0%, #b4befe 100%);
+    flex-shrink: 0;
+
+    svg {
+      color: #13131f;
+    }
+  }
+
+  .logo-text {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #cdd6f4;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+
+    .logo-text {
+      color: #fff;
+    }
+  }
+}
+
+/* ── Right: help + user ────────────────────────────────── */
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.help-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #a6adc8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #cdd6f4;
+  }
+}
+
+/* ── User pill ─────────────────────────────────────────── */
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 5px 5px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #89b4fa 0%, #b4befe 100%);
+  color: #13131f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  flex-shrink: 0;
+  letter-spacing: 0;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.user-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #cdd6f4;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+
+.user-email {
+  font-size: 11px;
+  color: #45475a;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  color: #45475a;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  flex-shrink: 0;
+
+  &:hover {
+    background: rgba(243, 139, 168, 0.12);
+    color: #f38ba8;
+  }
+}
