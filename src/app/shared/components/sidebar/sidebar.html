@@ -1,0 +1,125 @@
+<nav class="sidebar" [class.collapsed]="sidebarState.collapsed()">
+
+  <!-- Toggle button -->
+  <button class="toggle-btn" (click)="sidebarState.toggle()"
+    [title]="sidebarState.collapsed() ? 'Expand sidebar' : 'Collapse sidebar'">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="toggle-icon" [class.rotated]="sidebarState.collapsed()">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+  </button>
+
+  <div class="sidebar-content">
+
+    <!-- My Tasks -->
+    <section class="sidebar-section">
+      <button class="section-header" (click)="tasksOpen.set(!tasksOpen())"
+        [title]="sidebarState.collapsed() ? 'My Tasks' : ''">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="section-icon">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+        <span class="section-label">My Tasks</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="chevron" [class.open]="tasksOpen()">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+
+      @if (tasksOpen()) {
+        <div class="section-body">
+          <div class="placeholder-msg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            Coming soon
+          </div>
+        </div>
+      }
+    </section>
+
+    <!-- Boards -->
+    <section class="sidebar-section">
+      <button class="section-header" (click)="boardsOpen.set(!boardsOpen())"
+        [title]="sidebarState.collapsed() ? 'Boards' : ''">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="section-icon">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+        </svg>
+        <span class="section-label">Boards</span>
+        @if (!boardsLoading() && boards().length > 0) {
+          <span class="badge">{{ boards().length }}</span>
+        }
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="chevron" [class.open]="boardsOpen()">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+
+      @if (boardsOpen()) {
+        <div class="section-body">
+          @if (boardsLoading()) {
+            <div class="placeholder-msg">Loading…</div>
+          } @else if (boardsError()) {
+            <div class="placeholder-msg error">{{ boardsError() }}</div>
+          } @else if (boards().length === 0) {
+            <div class="placeholder-msg">No boards yet</div>
+          } @else {
+            @for (board of boards(); track board.id) {
+              <a routerLink="/boards" routerLinkActive="active"
+                class="sidebar-item" [title]="board.title">
+                <span class="board-initial">{{ board.title[0].toUpperCase() }}</span>
+                <span class="item-label">{{ board.title }}</span>
+              </a>
+            }
+          }
+        </div>
+      }
+    </section>
+
+    <!-- Goals -->
+    <section class="sidebar-section">
+      <button class="section-header" (click)="goalsOpen.set(!goalsOpen())"
+        [title]="sidebarState.collapsed() ? 'Goals' : ''">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="section-icon">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="6"/>
+          <circle cx="12" cy="12" r="2"/>
+        </svg>
+        <span class="section-label">Goals</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="chevron" [class.open]="goalsOpen()">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+
+      @if (goalsOpen()) {
+        <div class="section-body">
+          <div class="placeholder-msg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            Coming soon
+          </div>
+        </div>
+      }
+    </section>
+
+  </div>
+</nav>

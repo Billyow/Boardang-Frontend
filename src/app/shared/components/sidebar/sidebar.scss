@@ -1,0 +1,264 @@
+// Rail width when collapsed — single source of truth
+$rail: 60px;
+$icon-size: 15px;
+$icon-center-pad: calc(($rail - $icon-size) / 2); // ≈ 22px
+
+:host {
+  display: block;
+  width: var(--sidebar-width, 260px);
+  min-width: var(--sidebar-width, 260px);
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              min-width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #1e1e2e;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+// Fixed inner width — prevents content reflow during width transition
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 260px;
+}
+
+// ── Toggle button ──────────────────────────────────────────────────────────────
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 11px 14px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: #45475a;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+
+  &:hover {
+    color: #a6adc8;
+    background: rgba(255, 255, 255, 0.03);
+  }
+}
+
+.toggle-icon {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+
+  &.rotated {
+    transform: rotate(180deg);
+  }
+}
+
+// ── Scrollable content ─────────────────────────────────────────────────────────
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 10px 0;
+
+  &::-webkit-scrollbar { width: 3px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 2px;
+  }
+}
+
+// ── Section ────────────────────────────────────────────────────────────────────
+.sidebar-section {
+  margin-bottom: 2px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 8px 14px;
+  background: transparent;
+  border: none;
+  color: #585b70;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.15s, background 0.15s, padding 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 4px;
+  margin: 0 4px;
+  width: calc(100% - 8px);
+
+  &:hover {
+    color: #a6adc8;
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.section-icon {
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+
+.section-label {
+  flex: 1;
+  text-align: left;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.badge {
+  background: rgba(137, 180, 250, 0.14);
+  color: #89b4fa;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.chevron {
+  flex-shrink: 0;
+  transition: transform 0.18s ease, opacity 0.2s ease, visibility 0.2s ease;
+
+  &.open {
+    transform: rotate(180deg);
+  }
+}
+
+// ── Section body ───────────────────────────────────────────────────────────────
+.section-body {
+  padding: 2px 0 6px;
+  transition: opacity 0.2s ease;
+}
+
+.placeholder-msg {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px 5px 38px;
+  font-size: 12px;
+  color: #45475a;
+
+  &.error { color: #f38ba8; }
+}
+
+// ── Board item ─────────────────────────────────────────────────────────────────
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 26px;
+  font-size: 13px;
+  color: #7f849c;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: background 0.12s, color 0.12s, padding 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 6px;
+  margin: 1px 6px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #cdd6f4;
+
+    .board-initial {
+      background: rgba(137, 180, 250, 0.2);
+      color: #89b4fa;
+    }
+  }
+
+  &.active {
+    background: rgba(137, 180, 250, 0.1);
+    color: #89b4fa;
+
+    .board-initial {
+      background: rgba(137, 180, 250, 0.2);
+      color: #89b4fa;
+    }
+  }
+}
+
+// Board avatar shown in both expanded and collapsed states
+.board-initial {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #a6adc8;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.12s, color 0.12s;
+}
+
+.item-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+// ── Collapsed state ────────────────────────────────────────────────────────────
+.collapsed {
+
+  // Center toggle icon in the 60px rail
+  .toggle-btn {
+    justify-content: center;
+    padding: 11px $icon-center-pad;
+  }
+
+  // Center section icons by overriding padding instead of justify-content
+  // (justify-content would center within the 260px inner width, not the 60px rail)
+  .section-header {
+    padding-left: $icon-center-pad;
+    padding-right: 0;
+    margin: 0;
+    width: $rail;
+    border-radius: 0;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  // Fade + hide text elements
+  .section-label,
+  .badge,
+  .chevron {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  // Hide section bodies entirely in rail mode
+  .section-body {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  // Center board avatar in the rail
+  .sidebar-item {
+    padding: 6px 0;
+    margin: 1px 0;
+    width: $rail;
+    justify-content: center;
+    border-radius: 0;
+  }
+
+  .item-label {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
