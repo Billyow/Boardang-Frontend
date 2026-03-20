@@ -210,9 +210,12 @@ $icon-center-pad: calc(($rail - $icon-size) / 2); // ≈ 22px
 .collapsed {
 
   // Center toggle icon in the 60px rail
+  // justify-content: center would place it at 130px (center of 260px inner width), outside the visible rail.
+  // Use flex-start + explicit left padding to land it at ~22px, centered within the 60px clip.
   .toggle-btn {
-    justify-content: center;
-    padding: 11px $icon-center-pad;
+    justify-content: flex-start;
+    padding: 11px 0 11px $icon-center-pad;
+    color: #6c7086; // slightly brighter than default so it's obvious
   }
 
   // Center section icons by overriding padding instead of justify-content
@@ -261,4 +264,18 @@ $icon-center-pad: calc(($rail - $icon-size) / 2); // ≈ 22px
     visibility: hidden;
     pointer-events: none;
   }
+}
+
+// ── Task priority dot ──────────────────────────────────────────────────────────
+
+.task-priority {
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(69, 71, 90, 0.5); // fallback
+
+  &.priority-low    { background: rgba(166, 227, 161, 0.45); } // 0–10
+  &.priority-medium { background: rgba(249, 226, 175, 0.45); } // 11–50
+  &.priority-high   { background: rgba(243, 139, 168, 0.45); } // 51+
 }

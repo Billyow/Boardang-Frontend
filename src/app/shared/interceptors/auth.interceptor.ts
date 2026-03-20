@@ -9,13 +9,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const router = inject(Router);
 
     const token = authService.getToken();
-    const authReq = token
+    const isAuthEndpoint = req.url.includes('/auth/');
+    const authReq = (token && !isAuthEndpoint)
         ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
         : req;
 
     return next(authReq).pipe(
         catchError((error: HttpErrorResponse) => {
-            if (error.status !== 401 || req.url.includes('/auth/refresh')) {
+            if (error.status !== 401 || isAuthEndpoint) {
                 return throwError(() => error);
             }
 

@@ -1,0 +1,107 @@
+@if (loading()) {
+  <div class="board-loading">
+    <span class="loading-dot"></span>
+    <span class="loading-dot"></span>
+    <span class="loading-dot"></span>
+  </div>
+}
+
+@if (error()) {
+  <p class="board-state error" role="alert">{{ error() }}</p>
+}
+
+@if (board(); as b) {
+  <div class="board-page">
+    <div class="board-header">
+      <h2 class="board-title">{{ b.title }}</h2>
+      @if (b.description) {
+        <p class="board-desc">{{ b.description }}</p>
+      }
+    </div>
+
+    <div class="kanban-scroll">
+      <div class="kanban-track">
+
+        @for (col of b.columns; track col.id) {
+          <div class="column-card">
+            <div class="col-header">
+              <span class="col-title">{{ col.title }}</span>
+              <span class="col-count">{{ col.tasks.length }}</span>
+            </div>
+
+            <div class="tasks-list">
+              @for (task of col.tasks; track task.id) {
+                <div class="task-card" [class]="'priority-' + priorityClass(task.priority)">
+                  <span class="priority-dot"></span>
+                  <span class="task-title">{{ task.title }}</span>
+                </div>
+              }
+              @if (col.tasks.length === 0) {
+                <p class="col-empty">No tasks yet</p>
+              }
+            </div>
+
+            <div class="col-footer">
+              @if (addingTaskInColumn() === col.id) {
+                <form class="task-create-form" [formGroup]="createTaskForm" (ngSubmit)="onCreateTask(col.id)">
+                  <input
+                    class="create-input"
+                    formControlName="title"
+                    placeholder="Task title"
+                    autocomplete="off"
+                    autofocus
+                  />
+                  <div class="create-actions">
+                    <button
+                      class="btn-create"
+                      type="submit"
+                      [disabled]="createTaskForm.invalid || creatingTask()"
+                    >
+                      {{ creatingTask() ? 'Adding…' : 'Add' }}
+                    </button>
+                    <button class="btn-cancel" type="button" (click)="onCancelTask()">Cancel</button>
+                  </div>
+                </form>
+              } @else {
+                <button class="add-task-btn" type="button" (click)="onAddTask(col.id)">
+                  <span class="add-task-icon">+</span>
+                  Add task
+                </button>
+              }
+            </div>
+          </div>
+        }
+
+        <div class="add-column-card" [class.expanded]="showCreateForm()">
+          @if (!showCreateForm()) {
+            <button class="add-col-trigger" (click)="onAddColumn()" type="button">
+              <span class="add-icon">+</span>
+              <span class="add-label">Add column</span>
+            </button>
+          } @else {
+            <form class="create-form" [formGroup]="createForm" (ngSubmit)="onCreateColumn()">
+              <input
+                class="create-input"
+                formControlName="title"
+                placeholder="Column title"
+                autocomplete="off"
+                autofocus
+              />
+              <div class="create-actions">
+                <button
+                  class="btn-create"
+                  type="submit"
+                  [disabled]="createForm.invalid || creating()"
+                >
+                  {{ creating() ? 'Adding…' : 'Add' }}
+                </button>
+                <button class="btn-cancel" type="button" (click)="onCancelCreate()">Cancel</button>
+              </div>
+            </form>
+          }
+        </div>
+
+      </div>
+    </div>
+  </div>
+}

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -20,6 +20,8 @@ export class BoardsComponent {
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
   protected readonly creating = signal(false);
+  protected readonly openMenuId = signal<number | null>(null);
+  protected readonly showCreateForm = signal(false);
 
   protected readonly createForm = this.fb.group({
     title: ['', Validators.required],
@@ -40,6 +42,25 @@ export class BoardsComponent {
     });
   }
 
+  protected toggleMenu(id: number, event: Event): void {
+    event.stopPropagation();
+    this.openMenuId.update(current => current === id ? null : id);
+  }
+
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    this.openMenuId.set(null);
+  }
+
+  protected onCreateClick(): void {
+    this.showCreateForm.set(true);
+  }
+
+  protected onCancelCreate(): void {
+    this.showCreateForm.set(false);
+    this.createForm.reset();
+  }
+
   protected onCreate(): void {
     if (this.createForm.invalid) return;
 
@@ -56,6 +77,7 @@ export class BoardsComponent {
         this.boards.update(current => [...current, board]);
         this.createForm.reset();
         this.creating.set(false);
+        this.showCreateForm.set(false);
       },
       error: (err: unknown) => {
         console.error('Error creating board:', err);

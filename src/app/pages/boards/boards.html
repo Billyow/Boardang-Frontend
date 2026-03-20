@@ -1,42 +1,97 @@
-<h2>My Boards</h2>
+<div class="boards-page">
+  <div class="page-header">
+    <h2 class="page-title">My Boards</h2>
+  </div>
 
-@if (loading()) {
-  <p>Loading...</p>
-}
+  @if (loading()) {
+    <div class="boards-loading">
+      <span class="loading-dot"></span>
+      <span class="loading-dot"></span>
+      <span class="loading-dot"></span>
+    </div>
+  }
 
-@if (error()) {
-  <p role="alert">{{ error() }}</p>
-}
+  @if (error()) {
+    <p class="boards-error" role="alert">{{ error() }}</p>
+  }
 
-@if (!loading() && !error()) {
-  @if (boards().length === 0) {
-    <section aria-label="Create your first board">
-      <p>You have no boards yet. Create one to get started.</p>
+  @if (!loading() && !error()) {
+    <div class="boards-grid">
 
-      <form [formGroup]="createForm" (ngSubmit)="onCreate()">
-        <label for="title">Board title</label>
-        <input id="title" type="text" formControlName="title" />
-
-        <label for="description">Description (optional)</label>
-        <input id="description" type="text" formControlName="description" />
-
-        <button type="submit" [disabled]="createForm.invalid || creating()">
-          Create board
-        </button>
-      </form>
-    </section>
-  } @else {
-    <ul>
       @for (board of boards(); track board.id) {
-        <li>
-          <a [routerLink]="['/boards', board.id]">
-            <h3>{{ board.title }}</h3>
+        <div class="board-card" [class.menu-open]="openMenuId() === board.id">
+          <a class="board-link" [routerLink]="['/boards', board.id]">
+            <h3 class="board-title">{{ board.title }}</h3>
             @if (board.description) {
-              <p>{{ board.description }}</p>
+              <p class="board-desc">{{ board.description }}</p>
             }
           </a>
-        </li>
+
+          <button
+            class="card-menu-btn"
+            type="button"
+            aria-label="Board options"
+            (click)="toggleMenu(board.id, $event)"
+          >
+            <span class="menu-dots">⋯</span>
+          </button>
+
+          @if (openMenuId() === board.id) {
+            <div class="card-dropdown" (click)="$event.stopPropagation()">
+              <button class="menu-item" type="button">
+                Edit info <!-- TODO -->
+              </button>
+              <button class="menu-item danger" type="button">
+                Delete <!-- TODO -->
+              </button>
+            </div>
+          }
+        </div>
       }
-    </ul>
+
+      <div class="board-card add-card" [class.expanded]="showCreateForm()">
+        @if (!showCreateForm()) {
+          <button class="add-trigger" type="button" (click)="onCreateClick()">
+            <span class="add-icon">+</span>
+            <span class="add-label">New board</span>
+          </button>
+        } @else {
+          <form class="create-form" [formGroup]="createForm" (ngSubmit)="onCreate()">
+            <input
+              class="create-input"
+              type="text"
+              formControlName="title"
+              placeholder="Board name"
+              autocomplete="off"
+              autofocus
+            />
+            <input
+              class="create-input"
+              type="text"
+              formControlName="description"
+              placeholder="Description (optional)"
+              autocomplete="off"
+            />
+            <div class="create-actions">
+              <button
+                class="btn-create"
+                type="submit"
+                [disabled]="createForm.invalid || creating()"
+              >
+                {{ creating() ? 'Creating…' : 'Create' }}
+              </button>
+              <button
+                class="btn-cancel"
+                type="button"
+                (click)="onCancelCreate()"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        }
+      </div>
+
+    </div>
   }
-}
+</div>

@@ -27,6 +27,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/boards/boards').then(m => m.BoardsComponent),
       },
       {
+        path: 'boards/:id',
+        loadComponent: () => import('./pages/board-detail/board-detail').then(m => m.BoardDetailComponent),
+      },
+      {
         path: '',
         redirectTo: 'boards',
         pathMatch: 'full',

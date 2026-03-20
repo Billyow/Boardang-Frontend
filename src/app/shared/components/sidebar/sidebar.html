@@ -23,6 +23,9 @@
           <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
         </svg>
         <span class="section-label">My Tasks</span>
+        @if (!tasksLoading() && tasks().length > 0) {
+          <span class="badge">{{ tasks().length }}</span>
+        }
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
           class="chevron" [class.open]="tasksOpen()">
@@ -32,15 +35,20 @@
 
       @if (tasksOpen()) {
         <div class="section-body">
-          <div class="placeholder-msg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="8" x2="12" y2="12"/>
-              <line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
-            Coming soon
-          </div>
+          @if (tasksLoading()) {
+            <div class="placeholder-msg">Loading…</div>
+          } @else if (tasksError()) {
+            <div class="placeholder-msg error">{{ tasksError() }}</div>
+          } @else if (tasks().length === 0) {
+            <div class="placeholder-msg">No tasks assigned</div>
+          } @else {
+            @for (task of tasks(); track task.id) {
+              <div class="sidebar-item task-item" [title]="task.title">
+                <span class="task-priority" [class]="getTaskPriorityClass(task.priority)"></span>
+                <span class="item-label">{{ task.title }}</span>
+              </div>
+            }
+          }
         </div>
       }
     </section>
