@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { TaskResponse, CreateTaskRequest } from '../models/task.model';
+import { TaskResponse, CreateTaskRequest, MoveTaskRequest } from '../models/task.model';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
@@ -15,5 +15,12 @@ export class TaskService {
 
   createTask(body: CreateTaskRequest): Observable<TaskResponse> {
     return this.http.post<TaskResponse>(`/api/v1/boards/${body.boardId}/tasks`, body);
+  }
+
+  moveTask(body: MoveTaskRequest): Observable<TaskResponse> {
+    return this.http.patch<TaskResponse>(
+      `/api/v1/boards/${body.boardId}/tasks/${body.taskId}/move`,
+      { newColumnId: body.newColumnId },
+    );
   }
 }

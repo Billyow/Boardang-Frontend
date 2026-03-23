@@ -84,7 +84,7 @@
             <div class="placeholder-msg">No boards yet</div>
           } @else {
             @for (board of boards(); track board.id) {
-              <a routerLink="/boards" routerLinkActive="active"
+              <a [routerLink]="['/boards', board.id]" routerLinkActive="active"
                 class="sidebar-item" [title]="board.title">
                 <span class="board-initial">{{ board.title[0].toUpperCase() }}</span>
                 <span class="item-label">{{ board.title }}</span>

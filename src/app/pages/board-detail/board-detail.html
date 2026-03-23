@@ -23,15 +23,34 @@
       <div class="kanban-track">
 
         @for (col of b.columns; track col.id) {
-          <div class="column-card">
-            <div class="col-header">
+          <div
+            [class]="colClass(col.id)"
+            (dragover)="onColCardDragOver($event, col.id)"
+            (dragleave)="onColCardDragLeave($event)"
+            (drop)="onColCardDrop($event, col.id)"
+          >
+            <div
+              class="col-header"
+              draggable="true"
+              (dragstart)="onColHeaderDragStart($event, col.id)"
+              (dragend)="onColHeaderDragEnd()"
+            >
+              <span class="col-drag-handle" title="Drag to reorder">⠿</span>
               <span class="col-title">{{ col.title }}</span>
               <span class="col-count">{{ col.tasks.length }}</span>
             </div>
 
-            <div class="tasks-list">
+            <div
+              class="tasks-list"
+              [class.task-drop-active]="dropTargetColId() === col.id"
+            >
               @for (task of col.tasks; track task.id) {
-                <div class="task-card" [class]="'priority-' + priorityClass(task.priority)">
+                <div
+                  [class]="taskClass(task)"
+                  draggable="true"
+                  (dragstart)="onTaskDragStart($event, task, col.id)"
+                  (dragend)="onTaskDragEnd()"
+                >
                   <span class="priority-dot"></span>
                   <span class="task-title">{{ task.title }}</span>
                 </div>

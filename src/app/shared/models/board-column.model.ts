@@ -11,3 +11,8 @@ export interface BoardColumnCreateRequest {
   boardId: number;
   title: string;
 }
+
+export interface MoveColumnRequest {
+  afterColumnId: number | null;
+  beforeColumnId: number | null;
+}
