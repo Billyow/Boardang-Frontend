@@ -22,73 +22,15 @@
     <div class="kanban-scroll">
       <div class="kanban-track">
 
-        @for (col of b.columns; track col.id) {
-          <div
-            [class]="colClass(col.id)"
-            (dragover)="onColCardDragOver($event, col.id)"
-            (dragleave)="onColCardDragLeave($event)"
-            (drop)="onColCardDrop($event, col.id)"
-          >
-            <div
-              class="col-header"
-              draggable="true"
-              (dragstart)="onColHeaderDragStart($event, col.id)"
-              (dragend)="onColHeaderDragEnd()"
-            >
-              <span class="col-drag-handle" title="Drag to reorder">⠿</span>
-              <span class="col-title">{{ col.title }}</span>
-              <span class="col-count">{{ col.tasks.length }}</span>
-            </div>
-
-            <div
-              class="tasks-list"
-              [class.task-drop-active]="dropTargetColId() === col.id"
-            >
-              @for (task of col.tasks; track task.id) {
-                <div
-                  [class]="taskClass(task)"
-                  draggable="true"
-                  (dragstart)="onTaskDragStart($event, task, col.id)"
-                  (dragend)="onTaskDragEnd()"
-                >
-                  <span class="priority-dot"></span>
-                  <span class="task-title">{{ task.title }}</span>
-                </div>
-              }
-              @if (col.tasks.length === 0) {
-                <p class="col-empty">No tasks yet</p>
-              }
-            </div>
-
-            <div class="col-footer">
-              @if (addingTaskInColumn() === col.id) {
-                <form class="task-create-form" [formGroup]="createTaskForm" (ngSubmit)="onCreateTask(col.id)">
-                  <input
-                    class="create-input"
-                    formControlName="title"
-                    placeholder="Task title"
-                    autocomplete="off"
-                    autofocus
-                  />
-                  <div class="create-actions">
-                    <button
-                      class="btn-create"
-                      type="submit"
-                      [disabled]="createTaskForm.invalid || creatingTask()"
-                    >
-                      {{ creatingTask() ? 'Adding…' : 'Add' }}
-                    </button>
-                    <button class="btn-cancel" type="button" (click)="onCancelTask()">Cancel</button>
-                  </div>
-                </form>
-              } @else {
-                <button class="add-task-btn" type="button" (click)="onAddTask(col.id)">
-                  <span class="add-task-icon">+</span>
-                  Add task
-                </button>
-              }
-            </div>
-          </div>
+        @for (col of b.columns; track col.id; let i = $index) {
+          <app-kanban-column
+            [column]="col"
+            [boardId]="boardId"
+            [colorIndex]="i"
+            (taskAdded)="onTaskAdded($event)"
+            (taskDrop)="onTaskDrop($event)"
+            (colDrop)="onColDrop($event)"
+          />
         }
 
         <div class="add-column-card" [class.expanded]="showCreateForm()">

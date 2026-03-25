@@ -1,0 +1,51 @@
+<div
+  class="col-header"
+  draggable="true"
+  (dragstart)="onColHeaderDragStart($event)"
+  (dragend)="onColHeaderDragEnd()"
+>
+  <span class="col-drag-handle" title="Drag to reorder">⠿</span>
+  <span class="col-title">{{ column().title }}</span>
+  <span class="col-count">{{ column().tasks.length }}</span>
+</div>
+
+<div
+  class="tasks-list"
+  [class.task-drop-active]="dragState.dropTargetColId() === column().id"
+>
+  @for (task of column().tasks; track task.id) {
+    <app-task-card [task]="task" [colId]="column().id" />
+  }
+  @if (column().tasks.length === 0) {
+    <p class="col-empty">No tasks yet</p>
+  }
+</div>
+
+<div class="col-footer">
+  @if (addingTask()) {
+    <form class="task-create-form" [formGroup]="taskForm" (ngSubmit)="onCreateTask()">
+      <input
+        class="create-input"
+        formControlName="title"
+        placeholder="Task title"
+        autocomplete="off"
+        autofocus
+      />
+      <div class="create-actions">
+        <button
+          class="btn-create"
+          type="submit"
+          [disabled]="taskForm.invalid || creatingTask()"
+        >
+          {{ creatingTask() ? 'Adding…' : 'Add' }}
+        </button>
+        <button class="btn-cancel" type="button" (click)="onCancelTask()">Cancel</button>
+      </div>
+    </form>
+  } @else {
+    <button class="add-task-btn" type="button" (click)="onAddTask()">
+      <span class="add-task-icon">+</span>
+      Add task
+    </button>
+  }
+</div>
