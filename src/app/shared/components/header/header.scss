@@ -3,24 +3,46 @@
   width: 100%;
 }
 
+// ─── Header bar ───────────────────────────────────────────────────────────────
+
 .app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 28px;
-  height: 60px;
+  padding: 0 24px;
+  height: 56px;
   width: 100%;
   box-sizing: border-box;
-  background: #13131f;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(11, 11, 22, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 1px 16px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 1px 32px rgba(0, 0, 0, 0.5);
   font-family: 'Plus Jakarta Sans', sans-serif;
+
+  // Gradient accent bottom line
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(137, 180, 250, 0.1) 20%,
+      rgba(180, 190, 254, 0.38) 50%,
+      rgba(137, 180, 250, 0.1) 80%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
 }
 
-/* ── Left: logo / home ─────────────────────────────────── */
+// ─── Left: logo ───────────────────────────────────────────────────────────────
 
 .header-left {
   display: flex;
@@ -30,36 +52,21 @@
 .home-btn {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
   text-decoration: none;
-  padding: 7px 14px 7px 10px;
-  border-radius: 8px;
+  padding: 5px 12px 5px 7px;
+  border-radius: 9px;
   transition: background 0.18s;
-
-  .logo-mark {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 7px;
-    background: linear-gradient(135deg, #89b4fa 0%, #b4befe 100%);
-    flex-shrink: 0;
-
-    svg {
-      color: #13131f;
-    }
-  }
-
-  .logo-text {
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    color: #cdd6f4;
-  }
 
   &:hover {
     background: rgba(255, 255, 255, 0.05);
+
+    .logo-mark {
+      transform: rotate(-4deg) scale(1.06);
+      box-shadow:
+        0 0 0 4px rgba(137, 180, 250, 0.1),
+        0 6px 22px rgba(137, 180, 250, 0.28);
+    }
 
     .logo-text {
       color: #fff;
@@ -67,65 +74,114 @@
   }
 }
 
-/* ── Right: help + user ────────────────────────────────── */
+.logo-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #89b4fa 0%, #b4befe 100%);
+  flex-shrink: 0;
+  transition: box-shadow 0.22s, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 10px rgba(137, 180, 250, 0.2);
+
+  svg {
+    color: #13131f;
+  }
+}
+
+.logo-text {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #cdd6f4;
+  transition: color 0.18s;
+}
+
+// ─── Right ────────────────────────────────────────────────────────────────────
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
 }
+
+// ─── Help button ──────────────────────────────────────────────────────────────
 
 .help-btn {
   display: flex;
   align-items: center;
-  gap: 7px;
-  color: #a6adc8;
+  gap: 6px;
+  color: #45475a;
   text-decoration: none;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
-  padding: 7px 14px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03);
-  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  padding: 6px 11px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  transition: background 0.16s, color 0.16s, border-color 0.16s;
 
   svg {
     flex-shrink: 0;
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(255, 255, 255, 0.15);
-    color: #cdd6f4;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.07);
+    color: #a6adc8;
   }
 }
 
-/* ── User pill ─────────────────────────────────────────── */
+// ─── User pill ────────────────────────────────────────────────────────────────
 
-.user-info {
+.user-pill {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 5px 5px 5px 12px;
-  border-radius: 10px;
+  padding: 5px 14px 5px 5px;
+  border-radius: 40px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow:
+    0 2px 14px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  cursor: default;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.065);
+    border-color: rgba(137, 180, 250, 0.18);
+    box-shadow:
+      0 4px 20px rgba(0, 0, 0, 0.28),
+      0 0 0 1px rgba(137, 180, 250, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
 }
 
+// ─── Avatar ───────────────────────────────────────────────────────────────────
+
 .user-avatar {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: linear-gradient(135deg, #89b4fa 0%, #b4befe 100%);
   color: #13131f;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   flex-shrink: 0;
   letter-spacing: 0;
+  // Dark gap + accent ring glow
+  box-shadow:
+    0 0 0 2px rgba(11, 11, 22, 0.92),
+    0 0 0 3.5px rgba(137, 180, 250, 0.4),
+    0 4px 14px rgba(137, 180, 250, 0.22);
 }
+
+// ─── User details ─────────────────────────────────────────────────────────────
 
 .user-details {
   display: flex;
@@ -135,42 +191,59 @@
 }
 
 .user-name {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
   color: #cdd6f4;
-  line-height: 1.2;
+  line-height: 1.25;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 140px;
+  max-width: 130px;
+  letter-spacing: -0.01em;
 }
 
 .user-email {
-  font-size: 11px;
-  color: #45475a;
+  font-size: 10.5px;
+  color: #585b70;
   line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 140px;
+  max-width: 130px;
 }
+
+// ─── Logout button ────────────────────────────────────────────────────────────
 
 .logout-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  border: none;
-  background: transparent;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.03);
   color: #45475a;
-  border-radius: 7px;
+  border-radius: 9px;
   cursor: pointer;
-  transition: background 0.18s, color 0.18s;
   flex-shrink: 0;
+  transition: background 0.16s, color 0.16s, border-color 0.16s, box-shadow 0.16s;
+
+  svg {
+    transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
 
   &:hover {
-    background: rgba(243, 139, 168, 0.12);
+    background: rgba(243, 139, 168, 0.1);
+    border-color: rgba(243, 139, 168, 0.2);
     color: #f38ba8;
+    box-shadow: 0 0 12px rgba(243, 139, 168, 0.12);
+
+    svg {
+      transform: translateX(2px);
+    }
+  }
+
+  &:active {
+    transform: scale(0.93);
   }
 }
