@@ -1,6 +1,11 @@
 <div class="boards-page">
   <div class="page-header">
-    <h2 class="page-title">My Boards</h2>
+    <div class="header-top">
+      <h2 class="page-title">My Boards</h2>
+      @if (!loading() && boards().length > 0) {
+        <span class="board-count">{{ boards().length }}</span>
+      }
+    </div>
   </div>
 
   @if (loading()) {
@@ -21,10 +26,13 @@
       @for (board of boards(); track board.id) {
         <div class="board-card" [class.menu-open]="openMenuId() === board.id">
           <a class="board-link" [routerLink]="['/boards', board.id]">
-            <h3 class="board-title">{{ board.title }}</h3>
-            @if (board.description) {
-              <p class="board-desc">{{ board.description }}</p>
-            }
+            <div class="board-avatar">{{ board.title.charAt(0).toUpperCase() }}</div>
+            <div class="board-content">
+              <h3 class="board-title">{{ board.title }}</h3>
+              @if (board.description) {
+                <p class="board-desc">{{ board.description }}</p>
+              }
+            </div>
           </a>
 
           <button
@@ -52,7 +60,9 @@
       <div class="board-card add-card" [class.expanded]="showCreateForm()">
         @if (!showCreateForm()) {
           <button class="add-trigger" type="button" (click)="onCreateClick()">
-            <span class="add-icon">+</span>
+            <div class="add-icon-wrap">
+              <span class="add-icon">+</span>
+            </div>
             <span class="add-label">New board</span>
           </button>
         } @else {
