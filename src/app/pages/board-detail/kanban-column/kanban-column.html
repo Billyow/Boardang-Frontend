@@ -14,7 +14,7 @@
   [class.task-drop-active]="dragState.dropTargetColId() === column().id"
 >
   @for (task of column().tasks; track task.id) {
-    <app-task-card [task]="task" [colId]="column().id" />
+    <app-task-card [task]="task" [colId]="column().id" (taskOpen)="taskOpen.emit($event)" />
   }
   @if (column().tasks.length === 0) {
     <p class="col-empty">No tasks yet</p>

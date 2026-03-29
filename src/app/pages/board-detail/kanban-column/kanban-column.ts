@@ -47,6 +47,7 @@ export class KanbanColumnComponent {
   readonly taskAdded = output<{ columnId: number; task: TaskResponse }>();
   readonly taskDrop  = output<{ taskId: string; srcColId: number; targetColId: number }>();
   readonly colDrop   = output<{ srcColId: number; targetColId: number }>();
+  readonly taskOpen  = output<TaskResponse>();
 
   protected readonly dragState = inject(DragStateService);
   private  readonly taskService = inject(TaskService);

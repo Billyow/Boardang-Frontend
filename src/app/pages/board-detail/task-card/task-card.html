@@ -1,2 +1,9 @@
-<span class="priority-dot"></span>
-<span class="task-title">{{ task().title }}</span>
+<div class="card-top">
+  <span class="priority-dot"></span>
+  <span class="task-title">{{ task().title }}</span>
+</div>
+<div class="card-bottom">
+  <span class="priority-badge">{{ priorityLabel() }}</span>
+  <!-- TODO: convert into member-picker button component -->
+  <div class="avatar" [title]="task().createdBy.name">{{ initials() }}</div>
+</div>
