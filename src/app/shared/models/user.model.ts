@@ -4,3 +4,10 @@ export interface SimpleUser {
   email: string;
   isActive: boolean;
 }
+
+export type BoardMemberRole = 'ADMIN' | 'MEMBER' | 'VIEWER';
+
+export interface BoardMemberResponse {
+  user: SimpleUser;
+  role: BoardMemberRole;
+}

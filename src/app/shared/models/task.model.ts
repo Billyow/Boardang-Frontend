@@ -5,7 +5,7 @@ export interface TaskResponse {
   title: string;
   description: string | null;
   priority: number;
-  owner: SimpleUser;
+  createdBy: SimpleUser;
   collaborators: SimpleUser[];
 }
 
@@ -21,4 +21,10 @@ export interface MoveTaskRequest {
   taskId: string;
   newColumnId: number;
   boardId: number;
+}
+
+export interface UpdateTaskRequest {
+  title?: string;
+  description?: string | null;
+  priority?: number;
 }

@@ -1,4 +1,4 @@
-import { SimpleUser } from './user.model';
+import { BoardMemberResponse, SimpleUser } from './user.model';
 import { BoardColumnResponse } from './board-column.model';
 
 export interface BoardResponse {
@@ -9,7 +9,7 @@ export interface BoardResponse {
   updatedAt: string | null;
   owner: SimpleUser;
   columns: BoardColumnResponse[];
-  members: SimpleUser[];
+  members: BoardMemberResponse[];
 }
 
 export interface BoardSummaryResponse {
