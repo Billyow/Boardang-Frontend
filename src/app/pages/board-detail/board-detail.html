@@ -30,6 +30,7 @@
             (taskAdded)="onTaskAdded($event)"
             (taskDrop)="onTaskDrop($event)"
             (colDrop)="onColDrop($event)"
+            (taskOpen)="onTaskOpen($event)"
           />
         }
 
@@ -65,4 +66,13 @@
       </div>
     </div>
   </div>
+
+  @if (selectedTask(); as t) {
+    <app-task-detail-modal
+      [task]="t"
+      [board]="b"
+      (close)="selectedTask.set(null)"
+      (taskUpdated)="onTaskUpdated($event)"
+    />
+  }
 }

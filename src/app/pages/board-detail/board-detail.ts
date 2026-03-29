@@ -10,10 +10,11 @@ import { TaskResponse } from '../../shared/models/task.model';
 import { swal } from '../../shared/utils/swal';
 import { DragStateService } from './drag-state.service';
 import { KanbanColumnComponent } from './kanban-column/kanban-column';
+import { TaskDetailModalComponent } from './task-detail-modal/task-detail-modal';
 
 @Component({
   selector: 'app-board-detail',
-  imports: [ReactiveFormsModule, KanbanColumnComponent],
+  imports: [ReactiveFormsModule, KanbanColumnComponent, TaskDetailModalComponent],
   providers: [DragStateService],
   templateUrl: './board-detail.html',
   styleUrl: './board-detail.scss',
@@ -26,9 +27,10 @@ export class BoardDetailComponent {
   private readonly taskService   = inject(TaskService);
   private readonly fb            = inject(FormBuilder);
 
-  protected readonly board   = signal<BoardResponse | null>(null);
-  protected readonly loading = signal(true);
-  protected readonly error   = signal<string | null>(null);
+  protected readonly board        = signal<BoardResponse | null>(null);
+  protected readonly loading      = signal(true);
+  protected readonly error        = signal<string | null>(null);
+  protected readonly selectedTask = signal<TaskResponse | null>(null);
 
   protected readonly showCreateForm = signal(false);
   protected readonly creating       = signal(false);
@@ -90,6 +92,21 @@ export class BoardDetailComponent {
   }
 
   // ── Events from KanbanColumnComponent ───────────────────────────────────────
+
+  protected onTaskOpen(task: TaskResponse): void {
+    this.selectedTask.set(task);
+  }
+
+  protected onTaskUpdated(updated: TaskResponse): void {
+    this.board.update(b => b ? {
+      ...b,
+      columns: b.columns.map(col => ({
+        ...col,
+        tasks: col.tasks.map(t => t.id === updated.id ? updated : t),
+      })),
+    } : b);
+    this.selectedTask.set(updated);
+  }
 
   protected onTaskAdded(event: { columnId: number; task: TaskResponse }): void {
     this.board.update(b => b ? {
