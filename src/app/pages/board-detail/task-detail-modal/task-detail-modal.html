@@ -121,39 +121,9 @@
         <!-- Divider -->
         <div class="side-divider"></div>
 
-        <!-- Members -->
+        <!-- Assigned to -->
         <div class="side-card side-card--members">
-          <div class="members-header">
-            <span class="section-label">Members</span>
-            @if (canEdit() && availableMembers().length > 0) {
-              <div class="add-collaborator-wrapper" (click)="$event.stopPropagation()">
-                <button
-                  class="add-member-btn"
-                  type="button"
-                  [disabled]="saving()"
-                  (click)="toggleCollaboratorPicker()"
-                >+ Add</button>
-                @if (showCollaboratorPicker()) {
-                  <div class="picker-panel">
-                    @for (member of availableMembers(); track member.id) {
-                      <button
-                        class="member-option"
-                        type="button"
-                        [disabled]="saving()"
-                        (click)="addCollaborator(member.id)"
-                      >
-                        <div class="avatar avatar--sm">{{ memberInitials(member) }}</div>
-                        <div class="member-info">
-                          <span class="member-name">{{ member.name }}</span>
-                          <span class="member-email">{{ member.email }}</span>
-                        </div>
-                      </button>
-                    }
-                  </div>
-                }
-              </div>
-            }
-          </div>
+          <span class="section-label">Assigned to</span>
 
           <div class="collaborators">
             @for (c of task().collaborators; track c.id; let i = $index) {
@@ -172,9 +142,41 @@
               </div>
             }
             @if (task().collaborators.length === 0) {
-              <span class="no-members">No members yet</span>
+              <span class="no-members">No one assigned yet</span>
             }
           </div>
+
+          @if (canEdit()) {
+            <div class="add-collaborator-wrapper" (click)="$event.stopPropagation()">
+              <button
+                class="add-member-btn"
+                type="button"
+                [disabled]="saving() || availableMembers().length === 0"
+                (click)="toggleCollaboratorPicker()"
+              >
+                <span class="add-member-icon">+</span>
+                Assign member
+              </button>
+              @if (showCollaboratorPicker() && availableMembers().length > 0) {
+                <div class="picker-panel">
+                  @for (member of availableMembers(); track member.id) {
+                    <button
+                      class="member-option"
+                      type="button"
+                      [disabled]="saving()"
+                      (click)="addCollaborator(member.id)"
+                    >
+                      <div class="avatar avatar--sm">{{ memberInitials(member) }}</div>
+                      <div class="member-info">
+                        <span class="member-name">{{ member.name }}</span>
+                        <span class="member-email">{{ member.email }}</span>
+                      </div>
+                    </button>
+                  }
+                </div>
+              }
+            </div>
+          }
         </div>
 
       </aside>

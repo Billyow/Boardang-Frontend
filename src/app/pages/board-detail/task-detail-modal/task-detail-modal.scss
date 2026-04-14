@@ -551,13 +551,7 @@ $c-purple-collab: #a78bfa;
   color: $c-text-mid;
 }
 
-// ── Members ───────────────────────────────────────────────────────────────────
-
-.members-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+// ── Assigned to ───────────────────────────────────────────────────────────────
 
 .collaborators {
   display: flex;
@@ -627,24 +621,36 @@ $c-purple-collab: #a78bfa;
 }
 
 .add-member-btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 3px 10px;
-  border-radius: 7px;
-  border: 1px solid rgba($c-indigo, 0.26);
-  background: rgba($c-indigo, 0.06);
-  color: $c-indigo-light;
-  font-size: 11px;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px dashed rgba($c-indigo, 0.3);
+  background: transparent;
+  color: rgba($c-indigo-light, 0.6);
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
 
+  .add-member-icon {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1;
+    color: rgba($c-indigo-light, 0.5);
+    transition: color 0.15s;
+  }
+
   &:hover:not(:disabled) {
-    background: rgba($c-indigo, 0.14);
-    border-color: rgba($c-indigo, 0.48);
-    color: #a5b4fc;
+    background: rgba($c-indigo, 0.07);
+    border-color: rgba($c-indigo, 0.55);
+    color: $c-indigo-light;
+
+    .add-member-icon { color: $c-indigo-light; }
   }
   &:disabled { opacity: 0.35; cursor: not-allowed; }
 }
