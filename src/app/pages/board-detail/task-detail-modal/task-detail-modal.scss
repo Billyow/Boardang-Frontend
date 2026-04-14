@@ -20,15 +20,13 @@ $c-purple-collab: #a78bfa;
 .backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.72);
-  backdrop-filter: blur(14px) saturate(0.55);
-  -webkit-backdrop-filter: blur(14px) saturate(0.55);
+  background: rgba(0, 0, 0, 0.78);
   z-index: 200;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 16px;
-  animation: fade-in 0.2s ease both;
+  animation: fade-in 0.15s ease both;
 }
 
 @keyframes fade-in {
@@ -47,12 +45,10 @@ $c-purple-collab: #a78bfa;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: panel-enter 0.28s cubic-bezier(0.34, 1.15, 0.64, 1) both;
+  animation: panel-enter 0.2s ease both;
   box-shadow:
     0 0 0 1px rgba(130, 140, 255, 0.13),
-    0 0 80px rgba($c-indigo, 0.07),
-    0 40px 90px rgba(0, 0, 0, 0.8),
-    0 8px 30px rgba(0, 0, 0, 0.5);
+    0 24px 60px rgba(0, 0, 0, 0.7);
 
   // Top gradient accent line
   &::before {
@@ -69,30 +65,11 @@ $c-purple-collab: #a78bfa;
     );
     z-index: 4;
   }
-
-  // Inner ambient glow at top
-  &::after {
-    content: '';
-    position: absolute;
-    top: -60px; left: 50%;
-    transform: translateX(-50%);
-    width: 480px;
-    height: 200px;
-    background: radial-gradient(ellipse at 50% 0%, rgba($c-indigo, 0.11) 0%, transparent 65%);
-    pointer-events: none;
-    z-index: 0;
-  }
 }
 
 @keyframes panel-enter {
-  from {
-    opacity: 0;
-    transform: translateY(22px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 // ── Header ────────────────────────────────────────────────────────────────────
