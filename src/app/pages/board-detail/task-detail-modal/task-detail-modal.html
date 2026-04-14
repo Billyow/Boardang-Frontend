@@ -2,157 +2,187 @@
   <div class="panel" (click)="showCollaboratorPicker.set(false); $event.stopPropagation()">
 
     <header class="panel-header">
-      @if (editingTitle()) {
-        <input
-          class="title-input"
-          [ngModel]="titleDraft()"
-          (ngModelChange)="titleDraft.set($event)"
-          [disabled]="saving()"
-          (keydown)="onTitleKeydown($event)"
-          autofocus
-          placeholder="Task title"
-        />
-      } @else {
-        <h2
-          class="task-title"
-          [class.editable]="canEdit()"
-          (click)="startEditTitle()"
-          [title]="canEdit() ? 'Click to edit' : ''"
-        >{{ task().title }}</h2>
-      }
-      <button class="close-btn" type="button" (click)="close.emit()" aria-label="Close">✕</button>
+      <div class="header-inner">
+        @if (editingTitle()) {
+          <input
+            class="title-input"
+            [ngModel]="titleDraft()"
+            (ngModelChange)="titleDraft.set($event)"
+            [disabled]="saving()"
+            (keydown)="onTitleKeydown($event)"
+            autofocus
+            placeholder="Task title"
+          />
+        } @else {
+          <h2
+            class="task-title"
+            [class.editable]="canEdit()"
+            (click)="startEditTitle()"
+          >{{ task().title }}</h2>
+        }
+      </div>
+      <button class="close-btn" type="button" (click)="close.emit()" aria-label="Close">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
     </header>
 
     <div class="panel-body">
 
-      <!-- PRIORITY -->
-      <div class="meta-row">
-        <span class="meta-label">Priority</span>
-        @if (editingPriority()) {
-          <div class="priority-input-row">
-            <input
-              class="priority-input"
-              type="number"
-              min="1"
-              max="100"
-              [ngModel]="priorityDraft()"
-              (ngModelChange)="priorityDraft.set(+$event)"
-              [disabled]="saving()"
-              (keydown)="onPriorityKeydown($event)"
-              autofocus
-            />
-            <button class="btn-save-desc" type="button" [disabled]="saving()" (click)="savePriority()">Save</button>
-            <button class="btn-cancel-desc" type="button" (click)="cancelPriority()">Cancel</button>
-          </div>
-        } @else {
-          <span
-            class="priority-badge priority-{{ priorityLevel() }}"
-            [class.editable]="canEdit()"
-            (click)="startEditPriority()"
-            [title]="canEdit() ? 'Click to change' : ''"
-          >{{ task().priority }}</span>
-        }
-      </div>
-
-      <!-- CREATED BY -->
-      <div class="meta-row">
-        <span class="meta-label">Created by</span>
-        <div class="author">
-          <div class="avatar">{{ initials() }}</div>
-          <span class="author-name">{{ task().createdBy.name }}</span>
-        </div>
-      </div>
-
-      <!-- MEMBERS -->
-      <div class="meta-row">
-        <span class="meta-label">Members</span>
-        <div class="collaborators">
-          @for (c of task().collaborators; track c.id; let i = $index) {
-            <div class="collab-chip" [title]="c.name">
-              <div class="avatar collaborator-avatar">{{ collaboratorInitials()[i] }}</div>
-              @if (canEdit()) {
-                <button
-                  class="collab-remove-btn"
-                  type="button"
-                  [disabled]="saving()"
-                  (click)="removeCollaborator(c.id)"
-                  [attr.aria-label]="'Remove ' + c.name"
-                >×</button>
-              }
-            </div>
-          }
-
-          @if (canEdit() && availableMembers().length > 0) {
-            <div class="add-collaborator-wrapper" (click)="$event.stopPropagation()">
-              <button
-                class="avatar add-collaborator-btn"
-                type="button"
+      <!-- Left: Description -->
+      <section class="body-main">
+        <div class="section-block">
+          <span class="section-label">Description</span>
+          @if (editingDesc()) {
+            <div class="desc-edit-wrapper">
+              <textarea
+                class="desc-textarea"
+                [ngModel]="descDraft()"
+                (ngModelChange)="descDraft.set($event)"
                 [disabled]="saving()"
-                (click)="toggleCollaboratorPicker()"
-                title="Add member"
-              >+</button>
-
-              @if (showCollaboratorPicker()) {
-                <div class="picker-panel">
-                  @for (member of availableMembers(); track member.id) {
-                    <button
-                      class="member-option"
-                      type="button"
-                      [disabled]="saving()"
-                      (click)="addCollaborator(member.id)"
-                    >
-                      <div class="avatar member-avatar">{{ memberInitials(member) }}</div>
-                      <div class="member-info">
-                        <span class="member-name">{{ member.name }}</span>
-                        <span class="member-email">{{ member.email }}</span>
-                      </div>
-                    </button>
-                  }
+                (keydown)="onDescKeydown($event)"
+                rows="7"
+                placeholder="Add a description…"
+                autofocus
+              ></textarea>
+              <div class="desc-actions">
+                <span class="desc-hint">Ctrl+Enter to save · Esc to cancel</span>
+                <div class="desc-btns">
+                  <button class="btn-save" type="button" [disabled]="saving()" (click)="saveDesc()">Save</button>
+                  <button class="btn-cancel" type="button" (click)="cancelDesc()">Cancel</button>
                 </div>
-              }
-            </div>
-          }
-        </div>
-      </div>
-
-      <!-- DESCRIPTION -->
-      <div class="meta-row desc-row">
-        <span class="meta-label">Description</span>
-        @if (editingDesc()) {
-          <div class="desc-edit-wrapper">
-            <textarea
-              class="desc-textarea"
-              [ngModel]="descDraft()"
-              (ngModelChange)="descDraft.set($event)"
-              [disabled]="saving()"
-              (keydown)="onDescKeydown($event)"
-              rows="4"
-              placeholder="Add a description…"
-              autofocus
-            ></textarea>
-            <div class="desc-actions">
-              <span class="desc-hint">Ctrl+Enter to save · Esc to cancel</span>
-              <div class="desc-btns">
-                <button class="btn-save-desc" type="button" [disabled]="saving()" (click)="saveDesc()">Save</button>
-                <button class="btn-cancel-desc" type="button" (click)="cancelDesc()">Cancel</button>
               </div>
             </div>
+          } @else {
+            <div
+              class="desc-display"
+              [class.editable]="canEdit()"
+              (click)="canEdit() && startEditDesc()"
+            >
+              <p class="description" [class.empty]="!task().description">
+                {{ task().description ?? (canEdit() ? 'Add a description…' : 'No description.') }}
+              </p>
+              @if (canEdit()) {
+                <span class="desc-edit-hint">✎ Edit</span>
+              }
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Right: Sidebar metadata -->
+      <aside class="body-side">
+
+        <!-- Priority -->
+        <div class="side-card">
+          <span class="section-label">Priority</span>
+          @if (editingPriority()) {
+            <div class="priority-input-row">
+              <input
+                class="priority-input"
+                type="number" min="1" max="100"
+                [ngModel]="priorityDraft()"
+                (ngModelChange)="priorityDraft.set(+$event)"
+                [disabled]="saving()"
+                (keydown)="onPriorityKeydown($event)"
+                autofocus
+              />
+              <button class="btn-save btn--sm" type="button" [disabled]="saving()" (click)="savePriority()">Save</button>
+              <button class="btn-cancel btn--sm" type="button" (click)="cancelPriority()">Cancel</button>
+            </div>
+          } @else {
+            <div
+              class="priority-row priority-{{ priorityLevel() }}"
+              [class.editable]="canEdit()"
+              (click)="startEditPriority()"
+            >
+              <span class="priority-badge">
+                <span class="priority-dot"></span>
+                {{ task().priority }}
+              </span>
+              <span class="priority-name">{{ priorityLabel() }}</span>
+            </div>
+          }
+        </div>
+
+        <!-- Divider -->
+        <div class="side-divider"></div>
+
+        <!-- Created by -->
+        <div class="side-card">
+          <span class="section-label">Created by</span>
+          <div class="author">
+            <div class="avatar">{{ initials() }}</div>
+            <span class="author-name">{{ task().createdBy.name }}</span>
           </div>
-        } @else {
-          <p
-            class="description"
-            [class.editable]="canEdit()"
-            [class.empty]="!task().description"
-            (click)="startEditDesc()"
-            [title]="canEdit() ? 'Click to edit' : ''"
-          >{{ task().description ?? (canEdit() ? 'Add a description…' : 'No description.') }}</p>
-        }
-      </div>
+        </div>
 
-      @if (saving()) {
-        <p class="saving-indicator">Saving…</p>
-      }
+        <!-- Divider -->
+        <div class="side-divider"></div>
 
+        <!-- Members -->
+        <div class="side-card side-card--members">
+          <div class="members-header">
+            <span class="section-label">Members</span>
+            @if (canEdit() && availableMembers().length > 0) {
+              <div class="add-collaborator-wrapper" (click)="$event.stopPropagation()">
+                <button
+                  class="add-member-btn"
+                  type="button"
+                  [disabled]="saving()"
+                  (click)="toggleCollaboratorPicker()"
+                >+ Add</button>
+                @if (showCollaboratorPicker()) {
+                  <div class="picker-panel">
+                    @for (member of availableMembers(); track member.id) {
+                      <button
+                        class="member-option"
+                        type="button"
+                        [disabled]="saving()"
+                        (click)="addCollaborator(member.id)"
+                      >
+                        <div class="avatar avatar--sm">{{ memberInitials(member) }}</div>
+                        <div class="member-info">
+                          <span class="member-name">{{ member.name }}</span>
+                          <span class="member-email">{{ member.email }}</span>
+                        </div>
+                      </button>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="collaborators">
+            @for (c of task().collaborators; track c.id; let i = $index) {
+              <div class="collab-chip" [title]="c.name">
+                <div class="avatar avatar--collab">{{ collaboratorInitials()[i] }}</div>
+                <span class="collab-name">{{ c.name }}</span>
+                @if (canEdit()) {
+                  <button
+                    class="collab-remove-btn"
+                    type="button"
+                    [disabled]="saving()"
+                    (click)="removeCollaborator(c.id)"
+                    [attr.aria-label]="'Remove ' + c.name"
+                  >×</button>
+                }
+              </div>
+            }
+            @if (task().collaborators.length === 0) {
+              <span class="no-members">No members yet</span>
+            }
+          </div>
+        </div>
+
+      </aside>
     </div>
+
+    @if (saving()) {
+      <div class="saving-bar" aria-label="Saving…"></div>
+    }
+
   </div>
 </div>
